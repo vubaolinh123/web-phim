@@ -1,103 +1,106 @@
-import Image from "next/image";
+import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
+import { generateMetadata } from '@/components/shared/SEO';
+
+// Dynamic imports for performance optimization
+const HeroBanner = dynamic(() => import('@/components/sections/HeroBanner'), {
+  loading: () => (
+    <div className="h-screen bg-gray-900 animate-pulse flex items-center justify-center">
+      <div className="text-white">Đang tải...</div>
+    </div>
+  ),
+});
+
+const FeaturedRecommendations = dynamic(() => import('@/components/sections/FeaturedRecommendations'), {
+  loading: () => (
+    <div className="py-16 bg-gray-950/50">
+      <div className="w-[95%] mx-auto px-4">
+        <div className="h-8 bg-gray-800 rounded w-64 mb-8 animate-pulse"></div>
+        <div className="grid grid-cols-7 gap-6">
+          {Array.from({ length: 7 }).map((_, i) => (
+            <div key={i} className="bg-gray-800 aspect-[2/3] rounded animate-pulse"></div>
+          ))}
+        </div>
+      </div>
+    </div>
+  ),
+});
+
+const ChineseMoviesSection = dynamic(() => import('@/components/sections/MovieCategorySection').then(mod => mod.ChineseMoviesSection), { ssr: true });
+const KoreanMoviesSection = dynamic(() => import('@/components/sections/MovieCategorySection').then(mod => mod.KoreanMoviesSection), { ssr: true });
+const ThaiMoviesSection = dynamic(() => import('@/components/sections/MovieCategorySection').then(mod => mod.ThaiMoviesSection), { ssr: true });
+const WesternMoviesSection = dynamic(() => import('@/components/sections/MovieCategorySection').then(mod => mod.WesternMoviesSection), { ssr: true });
+const RecommendedForYouSection = dynamic(() => import('@/components/sections/MovieCategorySection').then(mod => mod.RecommendedForYouSection), { ssr: true });
+const Top10MoviesSection = dynamic(() => import('@/components/sections/MovieCategorySection').then(mod => mod.Top10MoviesSection), { ssr: true });
+
+// SEO metadata for homepage
+export const metadata = generateMetadata({
+  title: 'Trang chủ',
+  description: 'Xem phim online miễn phí chất lượng HD tại Phim-Moi. Cập nhật liên tục phim mới nhất, phim hay nhất từ Trung Quốc, Hàn Quốc, Thái Lan, Âu Mỹ và Việt Nam.',
+  keywords: 'xem phim online, phim mới, phim hay, phim HD, phim miễn phí, phim Trung Quốc, phim Hàn Quốc, phim Thái Lan, phim Âu Mỹ',
+  type: 'website',
+});
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen bg-black">
+      {/* Hero Banner Section */}
+      <Suspense fallback={
+        <div className="h-screen bg-gray-900 animate-pulse flex items-center justify-center">
+          <div className="text-white">Đang tải banner...</div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      }>
+        <HeroBanner />
+      </Suspense>
+
+      {/* Featured Recommendations Section */}
+      <Suspense fallback={
+        <div className="py-16 bg-gray-950/50 animate-pulse">
+          <div className="w-[95%]  mx-auto px-4">
+            <div className="h-8 bg-gray-800 rounded w-64 mb-8"></div>
+            <div className="grid grid-cols-7 gap-6">
+              {Array.from({ length: 7 }).map((_, i) => (
+                <div key={i} className="bg-gray-800 aspect-[2/3] rounded"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      }>
+        <FeaturedRecommendations />
+      </Suspense>
+
+      {/* Movie Category Sections */}
+      <div className="space-y-0" style={{ backgroundColor: 'var(--background)' }}>
+        {/* Chinese Movies */}
+        <Suspense fallback={<div className="py-12 bg-gray-900 animate-pulse h-96"></div>}>
+          <ChineseMoviesSection />
+        </Suspense>
+
+        {/* Korean Movies */}
+        <Suspense fallback={<div className="py-12 bg-gray-900 animate-pulse h-96"></div>}>
+          <KoreanMoviesSection />
+        </Suspense>
+
+        {/* Thai Movies */}
+        <Suspense fallback={<div className="py-12 bg-gray-900 animate-pulse h-96"></div>}>
+          <ThaiMoviesSection />
+        </Suspense>
+
+        {/* Western Movies */}
+        <Suspense fallback={<div className="py-12 bg-gray-900 animate-pulse h-96"></div>}>
+          <WesternMoviesSection />
+        </Suspense>
+
+        {/* Recommended for You */}
+        <Suspense fallback={<div className="py-12 bg-gray-950/30 animate-pulse h-96"></div>}>
+          <RecommendedForYouSection />
+        </Suspense>
+
+        {/* Top 10 Movies */}
+        <Suspense fallback={<div className="py-12 bg-gradient-to-r from-red-900/20 to-blue-900/20 animate-pulse h-96"></div>}>
+          <Top10MoviesSection />
+        </Suspense>
+      </div>
     </div>
   );
 }
