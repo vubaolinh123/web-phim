@@ -36,7 +36,7 @@ const defaultMovie: Movie = {
   posterUrl: 'https://cellphones.com.vn/sforum/wp-content/uploads/2023/08/hinh-nen-demon-slayer-10-1.jpg',
   bannerUrl: 'https://cellphones.com.vn/sforum/wp-content/uploads/2023/08/hinh-nen-demon-slayer-10-1.jpg',
   trailerUrl: '/video/banner.mp4',
-  href: '/phim/hero-movie-1',
+  href: '/movie/1',
 };
 
 // Format view count for display

@@ -145,21 +145,32 @@ export default function OptimizedImage({
       objectFit,
       objectPosition,
     },
+    // Use both onLoad and onLoadingComplete to reliably end loading state
     onLoad: handleLoad,
+    onLoadingComplete: handleLoad as any,
     onError: handleError,
     sizes: sizes || (fill ? '100vw' : undefined),
-  };
+  } as const;
+
+  // Workaround for dev caching bug: bypass optimization for pravatar in dev
+  let shouldUnoptimize = false;
+  if (process.env.NODE_ENV !== 'production') {
+    try {
+      const url = new URL(src);
+      if (url.hostname === 'i.pravatar.cc') shouldUnoptimize = true;
+    } catch { /* not an absolute URL */ }
+  }
 
   // Create final props with either priority OR loading, never both
   const imageProps = priority
-    ? { ...baseImageProps, priority: true }
-    : { ...baseImageProps, loading };
+    ? { ...baseImageProps, priority: true, unoptimized: shouldUnoptimize }
+    : { ...baseImageProps, loading, unoptimized: shouldUnoptimize };
 
   const commonWrapperClass = `${className?.includes('h-') ? '' : 'w-full'}`;
 
   return (
     <div
-      className={commonWrapperClass}
+      className={`relative ${commonWrapperClass}`}
       style={!fill ? { width, height } : {}}
     >
       <Image
@@ -169,8 +180,8 @@ export default function OptimizedImage({
         height={!fill ? height : undefined}
       />
       <div
-        className={`absolute inset-0 bg-gray-800 animate-pulse flex items-center justify-center transition-opacity duration-300 ${isLoading ? 'opacity-100' : 'opacity-0'}`}
-        style={!fill ? { width, height } : {}}
+        aria-hidden="true"
+        className={`pointer-events-none absolute inset-0 bg-gray-800/60 animate-pulse flex items-center justify-center transition-opacity duration-300 ${isLoading ? 'opacity-100' : 'opacity-0'}`}
       >
         <div className="text-gray-500">
           <svg

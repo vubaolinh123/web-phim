@@ -47,8 +47,8 @@ export default function CardVideoItem({
   }, [viewCount]);
   
   // Default href if not provided
-  const movieHref = href || `/phim/${id}`;
-  
+  const movieHref = href || `/movie/${id}`;
+
   // Default poster URL (placeholder will be handled by OptimizedImage)
   const posterSrc = posterUrl || 'https://cellphones.com.vn/sforum/wp-content/uploads/2023/08/hinh-nen-demon-slayer-10-1.jpg';
 

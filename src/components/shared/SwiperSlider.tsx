@@ -1,6 +1,7 @@
 'use client';
 
 import { Swiper } from 'swiper/react';
+import type { Swiper as SwiperType } from 'swiper';
 import { Navigation, A11y } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -39,7 +40,15 @@ export default function SwiperSlider({ children, className }: SwiperSliderProps)
           spaceBetween: 20,
         },
       }}
-      className={`w-full h-full py-8 ${className}`}
+      // Ensure hover-scaled slides are not clipped by Swiper's default overflow: hidden
+      onBeforeInit={(swiper: SwiperType) => {
+        try {
+          swiper.el.style.overflow = 'visible';
+          swiper.wrapperEl.style.overflow = 'visible';
+        } catch {}
+      }}
+      style={{ overflow: 'visible' }}
+      className={`w-full h-full py-8 !overflow-visible ${className || ''}`}
     >
       {children}
     </Swiper>

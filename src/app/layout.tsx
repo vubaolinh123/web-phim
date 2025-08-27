@@ -10,11 +10,16 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export const metadata: Metadata = generateSEOMetadata({
+const baseMetadata = generateSEOMetadata({
   title: "Trang chủ",
   description: "Xem phim online miễn phí chất lượng HD tại Phim-Moi. Cập nhật liên tục phim mới nhất, phim hay nhất từ Trung Quốc, Hàn Quốc, Thái Lan, Âu Mỹ và Việt Nam.",
   keywords: "xem phim online, phim mới, phim hay, phim HD, phim miễn phí, phim Trung Quốc, phim Hàn Quốc, phim Thái Lan, phim Âu Mỹ",
 });
+
+export const metadata: Metadata = {
+  ...baseMetadata,
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
+};
 
 export default function RootLayout({
   children,
